@@ -6,7 +6,7 @@ import "./style.css";
 import { createIcons, icons} from "lucide";
 import renderAll from "../utils/renderer";
 
-
+const LAST_CITY_KEY = "lastSearchedCity";
 document.getElementById("navbar-container").innerHTML = createNavbar();
 document.querySelector("main").innerHTML =
   createWeatherPage(null);
@@ -40,38 +40,37 @@ const searchButton = document.getElementById("search-button");
 const loadingMessage = document.getElementById("loading-message");
 const errorMessage = document.getElementById("error-message");
 
-async function searchWeather() {
-  const city = cityInput.value.trim();
+const savedCity = localStorage.getItem(LAST_CITY_KEY);
 
-  if (!city) {
-    return;
-  }
+if (savedCity) {
+  cityInput.value = savedCity;
+  loadWeatherForCity(savedCity);
+}
+
+async function loadWeatherForCity(city) {
+  if (!city) return;
 
   loadingMessage.classList.remove("hidden");
   errorMessage.classList.add("hidden");
 
   try {
     const location = await getCoordinates(city);
-
-    const weather = await getWeather(
-      location.latitude,
-      location.longitude
-    );
-
-    const weatherCardContainer = document.getElementById(
-      "weather-card-container"
-    );
+    const weather = await getWeather(location.latitude, location.longitude);
 
     const enrichedWeather = {
       ...weather,
       city: location.name,
       country: location.country
     };
+
     currentWeather = enrichedWeather;
+    selectedDayIndex = 0;
+
+    localStorage.setItem(LAST_CITY_KEY, location.name);
+    cityInput.value = location.name;
+
     renderAll(enrichedWeather);
     createIcons({ icons });
-    console.log("Location:", location);
-    console.log("Weather:", weather);
 
     errorMessage.classList.add("hidden");
     errorMessage.textContent = "";
@@ -81,6 +80,35 @@ async function searchWeather() {
   } finally {
     loadingMessage.classList.add("hidden");
   }
+}
+
+const resetButton = document.getElementById("reset-button");
+
+function resetApp() {
+  localStorage.removeItem(LAST_CITY_KEY);
+
+  currentWeather = null;
+  selectedDayIndex = 0;
+  cityInput.value = "";
+
+  errorMessage.textContent = "";
+  errorMessage.classList.add("hidden");
+  loadingMessage.classList.add("hidden");
+
+  document.getElementById("weather-card-container").innerHTML = "";
+  document.getElementById("forecast-container").innerHTML = `
+    <section class="forecast">
+      <p>Search for a city to see the forecast</p>
+    </section>
+  `;
+  document.getElementById("insights-container").innerHTML = "";
+}
+
+resetButton.addEventListener("click", resetApp);
+
+function searchWeather() {
+  const city = cityInput.value.trim();
+  loadWeatherForCity(city);
 }
 
 document.addEventListener("click", (e) => {

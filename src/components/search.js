@@ -14,7 +14,12 @@ export default function createSearch() {
       >
         Search
       </button>
-
+      <button
+        id="reset-button"
+        class="search__button"
+      >
+        Reset
+      </button>
       <p id="loading-message" class="search__loading hidden">
         Loading...
       </p>

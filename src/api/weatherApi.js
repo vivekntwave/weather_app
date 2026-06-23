@@ -18,13 +18,19 @@ export async function getCoordinates(city) {
     return data.results[0];
   }
   
-  export async function getWeather(latitude, longitude) {
-    const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,pressure_msl,wind_speed_10m,weather_code`
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch weather data");
-    }
+export async function getWeather(latitude, longitude) {
+  const response = await fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}
+    &current=temperature_2m,relative_humidity_2m,wind_speed_10m,pressure_msl,weather_code
+    &hourly=temperature_2m,relative_humidity_2m,weather_code
+    &daily=weather_code,temperature_2m_max,temperature_2m_min
+    &forecast_days=5`
+      .replace(/\s+/g, "")
+  );
   
-    return response.json();
+  if (!response.ok) {
+    throw new Error("Failed to fetch weather data");
   }
+  
+  return response.json();
+}

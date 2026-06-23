@@ -3,17 +3,20 @@ import createWeatherCard from "./weatherCard";
 import createForecast from "./forecast";
 import createInsights from "./insights";
 
-export default function createWeatherPage() {
+export default function createWeatherPage(weather) {
   return `
     <section class="weather-page">
       ${createSearch()}
 
-      <div id="weather-card-container">
-        ${createWeatherCard()}
+      <div id="weather-card-container"></div>
+
+      <div id="forecast-container">
+        ${createForecast(weather)}
       </div>
 
-      ${createForecast()}
-      ${createInsights()}
+      <div id="insights-container">
+        ${createInsights(weather)}
+      </div>
     </section>
   `;
 }

@@ -1,5 +1,5 @@
-import { getWeatherInfo } from "/utils/weatherCodes";
-import { getTemperatureClass } from "/utils/temperatureTheme";
+import { getWeatherInfo } from "../../utils/weatherCodes";
+import { getTemperatureClass } from "../../utils/temperatureTheme";
 
 export default function createWeatherCard(data = {}) {
   if (!data.city) {

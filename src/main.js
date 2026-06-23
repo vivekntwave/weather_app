@@ -1,8 +1,10 @@
 import createNavbar from "./components/navbar";
 import createFooter from "./components/footer";
 import createWeatherPage from "./components/weatherPage";
+import createWeatherCard from "./components/weatherCard";
 import { getCoordinates, getWeather } from "./api/weatherApi";
 import "./style.css";
+import { createIcons, icons} from "lucide";
 
 document.getElementById("navbar-container").innerHTML = createNavbar();
 document.querySelector("main").innerHTML =
@@ -54,10 +56,23 @@ async function searchWeather() {
       location.longitude
     );
 
+    const weatherCardContainer = document.getElementById(
+      "weather-card-container"
+    );
+    
+    weatherCardContainer.innerHTML = createWeatherCard({
+      city: location.name,
+      country: location.country,
+      temperature: weather.current.temperature_2m,
+      humidity: weather.current.relative_humidity_2m,
+      windSpeed: weather.current.wind_speed_10m,
+      pressure: weather.current.pressure_msl,
+      weatherCode: weather.current.weather_code
+    });
+    createIcons({icons});
     console.log("Location:", location);
     console.log("Weather:", weather);
 
-    // Success -> clear previous errors
     errorMessage.classList.add("hidden");
     errorMessage.textContent = "";
   } catch (error) {

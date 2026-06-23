@@ -5,11 +5,15 @@ import createInsights from "./insights";
 
 export default function createWeatherPage() {
   return `
-    <main class="weather-page">
+    <section class="weather-page">
       ${createSearch()}
-      ${createWeatherCard()}
+
+      <div id="weather-card-container">
+        ${createWeatherCard()}
+      </div>
+
       ${createForecast()}
       ${createInsights()}
-    </main>
+    </section>
   `;
 }

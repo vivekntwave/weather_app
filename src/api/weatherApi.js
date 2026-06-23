@@ -20,9 +20,8 @@ export async function getCoordinates(city) {
   
   export async function getWeather(latitude, longitude) {
     const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,pressure_msl,wind_speed_10m,weather_code`
     );
-  
     if (!response.ok) {
       throw new Error("Failed to fetch weather data");
     }

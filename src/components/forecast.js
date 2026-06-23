@@ -1,4 +1,4 @@
-import { getWeatherInfo } from "/utils/weatherCodes";
+import { getWeatherInfo } from "../../utils/weatherCodes";
 
 export default function createForecast(weather,selectedDayIndex=0) {
   if (!weather?.daily) {

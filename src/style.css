@@ -343,3 +343,17 @@ main {
 
   color: var(--color-text-muted);
 }
+
+.hidden {
+  display: none;
+}
+
+.search__loading {
+  color: var(--color-primary);
+  margin-top: 0.5rem;
+}
+
+.search__error {
+  color: red;
+  margin-top: 0.5rem;
+}

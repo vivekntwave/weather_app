@@ -37,6 +37,7 @@ themeToggle.addEventListener("click", () => {
 
 const cityInput = document.getElementById("city-input");
 const searchButton = document.getElementById("search-button");
+const resetButton = document.getElementById("reset-button");
 const loadingMessage = document.getElementById("loading-message");
 const errorMessage = document.getElementById("error-message");
 
@@ -50,6 +51,7 @@ if (savedCity) {
 async function loadWeatherForCity(city) {
   if (!city) return;
 
+  setLoadingState(true);
   loadingMessage.classList.remove("hidden");
   errorMessage.classList.add("hidden");
 
@@ -79,10 +81,15 @@ async function loadWeatherForCity(city) {
     errorMessage.classList.remove("hidden");
   } finally {
     loadingMessage.classList.add("hidden");
+    setLoadingState(false);
   }
 }
 
-const resetButton = document.getElementById("reset-button");
+function setLoadingState(isLoading) {
+  searchButton.disabled = isLoading;
+  resetButton.disabled = isLoading;
+  cityInput.disabled = isLoading;
+}
 
 function resetApp() {
   localStorage.removeItem(LAST_CITY_KEY);
